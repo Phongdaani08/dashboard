@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Executive Analytics & BI Dashboard — สิงหาคม 2569</title>
+<style>
+:root {
+  --bg: #060919;
+  --bg-card: rgba(15, 23, 50, 0.94);
+  --bg-card-hover: rgba(22, 34, 72, 0.98);
+  --bg-input: #0d1225;
+  --border: rgba(100, 140, 255, 0.12);
+  --border-focus: #ff9838;
+  --text-main: #eef2ff;
+  --text-muted: #8b9cc7;
+  --text-dim: #4a5a80;
+  --accent-orange: #ff9838;
+  --accent-blue: #3b82f6;
+  --accent-green: #22c55e;
+  --accent-purple: #a855f7;
+  --accent-red: #ef4444;
+  --accent-cyan: #06b6d4;
+  --accent-pink: #ec4899;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  --radius: 12px;
+}
+
+[data-theme="light"] {
+  --bg: #f4f6fc;
+  --bg-card: rgba(255, 255, 255, 0.96);
+  --bg-card-hover: #ffffff;
+  --bg-input: #e9eef8;
+  --border: rgba(50, 80, 180, 0.16);
+  --border-focus: #e67300;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
+  --accent-orange: #e67300;
+  --accent-blue: #2563eb;
+  --accent-green: #16a34a;
+  --accent-purple: #9333ea;
+  --accent-red: #dc2626;
+  --accent-cyan: #0891b2;
+  --accent-pink: #db2777;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Thai', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  transition: background 0.3s, color 0.3s;
+  line-height: 1.4;
+  padding-bottom: 30px;
+}
+
+.container {
+  max-width: 1520px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* SVG Enterprise Icons */
+.ui-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  vertical-align: -2px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ui-icon-lg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.75;
+  display: inline-block;
+  vertical-align: middle;
+  stroke: currentColor;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ui-icon-md {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: -3px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-icon {
+  background: linear-gradient(135deg, rgba(255,152,56,0.2), rgba(59,130,246,0.2));
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  color: var(--accent-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--accent-orange), #ffa654);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+.header-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.badge {
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255, 152, 56, 0.12);
+  color: var(--accent-orange);
+  font-weight: 700;
+  border: 1px solid rgba(255, 152, 56, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-action {
+  padding: 6px 12px;
+  font-size: 10.5px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-action:hover {
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+  transform: translateY(-1px);
+}
+
+/* Control & Filter Panel */
+.filter-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  align-items: flex-end;
+  box-shadow: var(--shadow);
+}
+.filter-group { display: flex; flex-direction: column; gap: 4px; }
+.filter-group label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.filter-group select, .filter-group input {
+  padding: 6px 10px;
+  font-size: 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-input);
+  color: var(--text-main);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.filter-group select:hover, .filter-group select:focus {
+  border-color: var(--accent-orange);
+}
+.filter-btns {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.btn-reset {
+  padding: 7px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 152, 56, 0.35);
+  background: rgba(255, 152, 56, 0.12);
+  color: var(--accent-orange);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-reset:hover {
+  background: rgba(255, 152, 56, 0.25);
+  transform: translateY(-1px);
+}
+.filter-status {
+  grid-column: 1 / -1;
+  font-size: 10px;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+.filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.pill {
+  font-size: 9.5px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--accent-blue);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+/* Chart View Customizer & Preset Bar */
+.chart-config-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.config-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.config-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent-orange);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.preset-btns {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.btn-preset {
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-preset:hover {
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+}
+.btn-preset.active {
+  background: rgba(255, 152, 56, 0.18);
+  color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+.chip-grid {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+.chip {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.chip:hover {
+  border-color: var(--text-muted);
+}
+.chip.active {
+  background: rgba(59, 130, 246, 0.16);
+  color: var(--text-main);
+  border-color: var(--accent-blue);
+}
+.chip-chk {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.4;
+}
+.chip.active .chip-chk {
+  color: var(--accent-green);
+  opacity: 1;
+}
+
+/* KPI Ribbon */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 8px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s;
+}
+.kpi-card:hover { transform: translateY(-2px); }
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.kpi-card:nth-child(1)::before { background: var(--accent-orange); }
+.kpi-card:nth-child(2)::before { background: var(--accent-red); }
+.kpi-card:nth-child(3)::before { background: var(--accent-green); }
+.kpi-card:nth-child(4)::before { background: var(--accent-purple); }
+.kpi-card:nth-child(5)::before { background: var(--accent-blue); }
+.kpi-card:nth-child(6)::before { background: var(--accent-cyan); }
+.kpi-card:nth-child(7)::before { background: #f59e0b; }
+.kpi-card:nth-child(8)::before { background: var(--accent-pink); }
+
+.kpi-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.kpi-val {
+  font-size: 19px;
+  font-weight: 800;
+  margin: 4px 0 2px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+.kpi-sub {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* AI Insights & Strategy Box */
+.insight-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.insight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.insight-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--accent-orange);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 6px;
+}
+.insight-item {
+  font-size: 10px;
+  color: var(--text-muted);
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(20, 30, 60, 0.4);
+  line-height: 1.45;
+  border: 1px solid var(--border);
+}
+[data-theme="light"] .insight-item {
+  background: rgba(230, 238, 255, 0.5);
+}
+.insight-item b { color: var(--text-main); }
+.insight-item .tag {
+  display: inline-block;
+  font-size: 8.5px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-right: 5px;
+  text-transform: uppercase;
+}
+.tag-top { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+.tag-warn { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+.tag-info { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+.tag-strat { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); }
+
+/* Chart Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+.chart-card.hidden {
+  display: none !important;
+}
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chart-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.chart-title .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.chart-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.chart-controls select, .chart-controls button {
+  font-size: 9.5px;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-input);
+  color: var(--text-main);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.chart-controls select:hover, .chart-controls button:hover {
+  border-color: var(--accent-orange);
+}
+.btn-preview {
+  background: rgba(255, 152, 56, 0.12) !important;
+  color: var(--accent-orange) !important;
+  border-color: rgba(255, 152, 56, 0.25) !important;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  flex-grow: 1;
+}
+canvas {
+  width: 100%;
+  height: 250px;
+  display: block;
+  border-radius: 6px;
+}
+
+/* Heatmap Grid */
+.heatmap-grid {
+  display: grid;
+  gap: 4px;
+  margin-top: 4px;
+}
+.hm-cell {
+  border-radius: 6px;
+  padding: 8px 2px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  color: #fff;
+  position: relative;
+  cursor: default;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.hm-cell:hover {
+  transform: scale(1.05);
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+.hm-lbl {
+  font-size: 9px;
+  color: var(--text-muted);
+  padding: 6px 2px;
+  text-align: center;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hm-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 15, 30, 0.96);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 9.5px;
+  white-space: nowrap;
+  z-index: 50;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  text-align: left;
+  line-height: 1.5;
+  font-weight: 400;
+  border: 1px solid rgba(255,255,255,0.15);
+  pointer-events: none;
+}
+.hm-cell:hover .hm-tooltip { display: block; }
+
+/* Data Preview Drawer */
+.preview-drawer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+.preview-drawer.open {
+  max-height: 320px;
+  overflow-y: auto;
+  margin-top: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+.preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.5px;
+}
+.preview-table th {
+  background: var(--bg-input);
+  color: var(--text-muted);
+  padding: 5px 8px;
+  text-align: left;
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid var(--border);
+}
+.preview-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+.preview-table tr:hover td {
+  background: rgba(255, 152, 56, 0.05);
+}
+
+/* Master Transaction Table */
+.master-table-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  margin-bottom: 14px;
+}
+.master-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.search-input {
+  padding: 6px 12px;
+  font-size: 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-input);
+  color: var(--text-main);
+  outline: none;
+  min-width: 260px;
+}
+.search-input:focus { border-color: var(--accent-orange); }
+.master-table-wrapper {
+  max-height: 380px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.master-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+.master-table th {
+  background: var(--bg-input);
+  color: var(--text-muted);
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.master-table th:hover { color: var(--accent-orange); }
+.master-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  white-space: nowrap;
+}
+.master-table tr:hover td { background: rgba(255, 152, 56, 0.06); }
+
+/* Global Tooltip */
+.tooltip {
+  display: none;
+  position: fixed;
+  background: rgba(10, 15, 30, 0.95);
+  color: #fff;
+  padding: 9px 13px;
+  border-radius: 8px;
+  font-size: 10px;
+  line-height: 1.5;
+  z-index: 1000;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  max-width: 260px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  font-size: 9px;
+  color: var(--text-dim);
+  padding: 14px 10px;
+  border-top: 1px solid var(--border);
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .kpi-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 860px) {
+  .charts-grid { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .header { flex-direction: column; align-items: flex-start; }
+}
+@media print {
+  body { background: #fff; color: #000; }
+  .filter-panel, .header-actions, .chart-controls, .preview-drawer, .btn-preview, .btn-action, .chart-config-bar { display: none !important; }
+  .chart-card, .kpi-card, .insight-box, .master-table-card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; }
+  .charts-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div class="header-icon">
+        <svg class="ui-icon-lg" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+      </div>
+      <div>
+        <h1>Enterprise Executive Analytics & BI Dashboard</h1>
+        <div class="header-sub">ระบบวิเคราะห์ผลการดำเนินงานยอดขายร้านกาแฟระดับองค์กร · สิงหาคม 2569 · 3 สาขา · 8 เมนู · 100 ธุรกรรม</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="badge">
+        <svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        ข้อมูลจำลองเพื่อการเรียนรู้ (100% Zero-Dependency)
+      </span>
+      <button class="btn-action" onclick="toggleTheme()">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <span id="themeTxt">Light Mode</span>
+      </button>
+      <button class="btn-action" onclick="window.print()">
+        <svg class="ui-icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        พิมพ์ / PDF
+      </button>
+      <button class="btn-action" onclick="exportMasterCSV()">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        ส่งออก CSV
+      </button>
+    </div>
+  </header>
+
+  <!-- Filter & Slicers -->
+  <section class="filter-panel">
+    <div class="filter-group">
+      <label>
+        <svg class="ui-icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="9" y1="22" x2="9" y2="22.01"></line><line x1="15" y1="22" x2="15" y2="22.01"></line><line x1="9" y1="6" x2="9" y2="6.01"></line><line x1="15" y1="6" x2="15" y2="6.01"></line><line x1="9" y1="10" x2="9" y2="10.01"></line><line x1="15" y1="10" x2="15" y2="10.01"></line><line x1="9" y1="14" x2="9" y2="14.01"></line><line x1="15" y1="14" x2="15" y2="14.01"></line><line x1="9" y1="18" x2="9" y2="18.01"></line><line x1="15" y1="18" x2="15" y2="18.01"></line></svg>
+        สาขา (Branch)
+      </label>
+      <select id="fBranch" onchange="applyFilters()">
+        <option value="-1">ทั้งหมด (All Branches)</option>
+        <option value="0">มหาวิทยาลัย (University)</option>
+        <option value="1">สำนักงาน (Office)</option>
+        <option value="2">ห้างสรรพสินค้า (Mall)</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>
+        <svg class="ui-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        หมวดหมู่ (Category)
+      </label>
+      <select id="fCat" onchange="applyFilters()">
+        <option value="-1">ทั้งหมด (All Categories)</option>
+        <option value="0">กาแฟ (Coffee)</option>
+        <option value="1">เครื่องดื่มอื่น (Other Drinks)</option>
+        <option value="2">เบเกอรี (Bakery)</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+        สินค้า (Product)
+      </label>
+      <select id="fProd" onchange="applyFilters()">
+        <option value="-1">ทั้งหมด (All Products)</option>
+        <option value="0">ครัวซองต์</option>
+        <option value="1">คาปูชิโน</option>
+        <option value="2">ชาไทย</option>
+        <option value="3">ชีสเค้ก</option>
+        <option value="4">บราวนี</option>
+        <option value="5">ลาเต้</option>
+        <option value="6">อเมริกาโน</option>
+        <option value="7">โกโก้</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>
+        <svg class="ui-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        ช่วงเวลา (Date Range)
+      </label>
+      <select id="fDate" onchange="applyFilters()">
+        <option value="all">ทั้งเดือน (1-31 ส.ค. 2569)</option>
+        <option value="w1">สัปดาห์ที่ 1 (1-7 ส.ค.)</option>
+        <option value="w2">สัปดาห์ที่ 2 (8-14 ส.ค.)</option>
+        <option value="w3">สัปดาห์ที่ 3 (15-21 ส.ค.)</option>
+        <option value="w4">สัปดาห์ที่ 4 (22-28 ส.ค.)</option>
+        <option value="w5">สัปดาห์ที่ 5 (29-31 ส.ค.)</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>
+        <svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        ประเภทวัน (Day Type)
+      </label>
+      <select id="fDayType" onchange="applyFilters()">
+        <option value="all">ทุกวัน (All Days)</option>
+        <option value="weekday">วันธรรมดา (จันทร์ - ศุกร์)</option>
+        <option value="weekend">วันหยุด (เสาร์ - อาทิตย์)</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>
+        <svg class="ui-icon" viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
+        Margin Tier
+      </label>
+      <select id="fMarginTier" onchange="applyFilters()">
+        <option value="all">ทุกช่วงกำไร (All Tiers)</option>
+        <option value="high">High Margin (> 60%)</option>
+        <option value="mid">Mid Margin (40% - 60%)</option>
+        <option value="low">Low Margin (< 40%)</option>
+      </select>
+    </div>
+
+    <div class="filter-btns">
+      <button class="btn-reset" onclick="resetFilters()">
+        <svg class="ui-icon" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+        ล้างตัวกรอง
+      </button>
+    </div>
+
+    <div class="filter-status">
+      <span id="filterCount">แสดง 100 / 100 รายการ (100%)</span>
+      <div class="filter-pills" id="activeFilterPills"></div>
+    </div>
+  </section>
+
+  <!-- KPI Ribbon -->
+  <section class="kpi-grid" id="kpiContainer"></section>
+
+  <!-- Executive Insights & Strategy -->
+  <section class="insight-box">
+    <div class="insight-header">
+      <div class="insight-title">
+        <svg class="ui-icon-md" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        Executive Briefing & Strategic Insights (บทวิเคราะห์สรุปสำหรับผู้บริหาร)
+      </div>
+    </div>
+    <div class="insight-grid" id="insightList"></div>
+  </section>
+
+  <!-- Chart Configuration & Visibility Bar -->
+  <section class="chart-config-bar">
+    <div class="config-header">
+      <div class="config-title">
+        <svg class="ui-icon-md" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+        <span>กำหนดและเลือกการแสดงผลกราฟ (Layout & Module Focus)</span>
+        <span class="badge" id="chartCountBadge" style="font-size:9px;padding:2px 8px;">แสดง 4 / 8 กราฟ</span>
+      </div>
+      <div class="preset-btns">
+        <button class="btn-preset active" id="btnP-exec" onclick="setChartPreset('exec')">
+          <svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+          โหมดผู้บริหาร (4 กราฟหลัก)
+        </button>
+        <button class="btn-preset" id="btnP-prod" onclick="setChartPreset('prod')">
+          <svg class="ui-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          โหมดกลยุทธ์สินค้า (4 กราฟ)
+        </button>
+        <button class="btn-preset" id="btnP-ops" onclick="setChartPreset('ops')">
+          <svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          โหมดการดำเนินงาน & ช่วงเวลา (4 กราฟ)
+        </button>
+        <button class="btn-preset" id="btnP-all" onclick="setChartPreset('all')">
+          <svg class="ui-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+          แสดงครบทั้งหมด (8 กราฟ)
+        </button>
+      </div>
+    </div>
+    <div class="chip-grid">
+      <div class="chip active" id="chip-1" onclick="toggleChart(1)"><span class="chip-chk"><svg class="ui-icon" style="width:11px;height:11px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span> 1. Daily Trend & MA7</div>
+      <div class="chip active" id="chip-2" onclick="toggleChart(2)"><span class="chip-chk"><svg class="ui-icon" style="width:11px;height:11px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span> 2. Heatmap สาขา × สินค้า</div>
+      <div class="chip" id="chip-3" onclick="toggleChart(3)"><span class="chip-chk"><svg class="ui-icon" style="width:11px;height:11px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span> 3. Heatmap วันในสัปดาห์</div>
+      <div class="chip" id="chip-4" onclick="toggleChart(4)"><span class="chip-chk"><svg class="ui-icon" style="width:11px;height:11px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span> 4. BCG Portfolio Matrix</div>
+      <div class="chip" id="chip-5" onclick="toggleChart(5)"><span class="chip-chk"><svg class="ui-icon" style="width:11px;height:11px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span> 5. สัดส่วนหมวดหมู่</div>
+      <div class="chip active" id="chip-6" onclick="toggleChart(6)"><span class="chip-chk"><svg class="ui-icon" style="width:11px;height:11px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span> 6. Market Share ส่วนแบ่งสาขา</div>
+      <div class="chip active" id="chip-7" onclick="toggleChart(7)"><span class="chip-chk"><svg class="ui-icon" style="width:11px;height:11px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span> 7. Pareto 80/20 Analysis</div>
+      <div class="chip" id="chip-8" onclick="toggleChart(8)"><span class="chip-chk"><svg class="ui-icon" style="width:11px;height:11px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span> 8. SKU Unit Economics</div>
+    </div>
+  </section>
+
+  <!-- Visual Analytics 8 Modules -->
+  <main class="charts-grid" id="chartsGrid">
+    <!-- Module 1: Daily Trend -->
+    <div class="chart-card" id="card-1">
+      <div class="chart-header">
+        <div class="chart-title"><span class="dot" style="background:#ff9838"></span>1. Daily Trend — ยอดขาย, กำไร & เส้นแนวโน้ม MA7</div>
+        <div class="chart-controls">
+          <select id="t1" onchange="renderC1()"><option value="line">เส้น (Line)</option><option value="bar">แท่ง (Bar)</option><option value="area">พื้นที่ (Area)</option></select>
+          <button class="btn-preview" onclick="toggleDrawer('p1')">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            Data
+          </button>
+        </div>
+      </div>
+      <div class="canvas-wrapper"><canvas id="c1"></canvas></div>
+      <div class="preview-drawer" id="p1"><table class="preview-table" id="v1"></table></div>
+    </div>
+
+    <!-- Module 2: Branch x Product Heatmap -->
+    <div class="chart-card" id="card-2">
+      <div class="chart-header">
+        <div class="chart-title"><span class="dot" style="background:#a855f7"></span>2. Matrix Heatmap — สาขา × สินค้า</div>
+        <div class="chart-controls">
+          <select id="m2" onchange="renderH2()"><option value="m">Margin%</option><option value="r">รายได้ (Revenue)</option><option value="p">กำไร (Profit)</option><option value="q">ปริมาณ (Units)</option></select>
+          <button class="btn-preview" onclick="toggleDrawer('p2')">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            Data
+          </button>
+        </div>
+      </div>
+      <div id="h2"></div>
+      <div class="preview-drawer" id="p2"><table class="preview-table" id="v2"></table></div>
+    </div>
+
+    <!-- Module 3: Day of Week x Branch Heatmap -->
+    <div class="chart-card hidden" id="card-3">
+      <div class="chart-header">
+        <div class="chart-title"><span class="dot" style="background:#3b82f6"></span>3. Traffic Matrix — วันในสัปดาห์ × สาขา</div>
+        <div class="chart-controls">
+          <select id="m3" onchange="renderH3()"><option value="r">รายได้ (Revenue)</option><option value="p">กำไร (Profit)</option><option value="q">ปริมาณ (Units)</option></select>
+          <button class="btn-preview" onclick="toggleDrawer('p3')">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            Data
+          </button>
+        </div>
+      </div>
+      <div id="h3"></div>
+      <div class="preview-drawer" id="p3"><table class="preview-table" id="v3"></table></div>
+    </div>
+
+    <!-- Module 4: BCG Matrix -->
+    <div class="chart-card hidden" id="card-4">
+      <div class="chart-header">
+        <div class="chart-title"><span class="dot" style="background:#06b6d4"></span>4. Product Portfolio BCG Matrix (Volume vs Margin%)</div>
+        <div class="chart-controls">
+          <button class="btn-preview" onclick="toggleDrawer('p4')">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            Data
+          </button>
+        </div>
+      </div>
+      <div class="canvas-wrapper"><canvas id="c4"></canvas></div>
+      <div class="preview-drawer" id="p4"><table class="preview-table" id="v4"></table></div>
+    </div>
+
+    <!-- Module 5: Branch x Category Distribution -->
+    <div class="chart-card hidden" id="card-5">
+      <div class="chart-header">
+        <div class="chart-title"><span class="dot" style="background:#22c55e"></span>5. Revenue Structure — สาขา × หมวดหมู่</div>
+        <div class="chart-controls">
+          <select id="t5" onchange="renderC5()"><option value="stack">ซ้อนทับ (Stacked)</option><option value="group">จัดกลุ่ม (Grouped)</option><option value="pct">ร้อยละ 100% (Normalized)</option></select>
+          <button class="btn-preview" onclick="toggleDrawer('p5')">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            Data
+          </button>
+        </div>
+      </div>
+      <div class="canvas-wrapper"><canvas id="c5"></canvas></div>
+      <div class="preview-drawer" id="p5"><table class="preview-table" id="v5"></table></div>
+    </div>
+
+    <!-- Module 6: Branch Market Share -->
+    <div class="chart-card" id="card-6">
+      <div class="chart-header">
+        <div class="chart-title"><span class="dot" style="background:#f59e0b"></span>6. Market Share & Contribution — ส่วนแบ่งสาขา</div>
+        <div class="chart-controls">
+          <select id="t6" onchange="renderC6()"><option value="donut">โดนัท (Donut)</option><option value="pie">พาย (Pie)</option><option value="bar">แท่งแนวนอน (Bar)</option></select>
+          <button class="btn-preview" onclick="toggleDrawer('p6')">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            Data
+          </button>
+        </div>
+      </div>
+      <div class="canvas-wrapper"><canvas id="c6"></canvas></div>
+      <div class="preview-drawer" id="p6"><table class="preview-table" id="v6"></table></div>
+    </div>
+
+    <!-- Module 7: Pareto 80/20 -->
+    <div class="chart-card" id="card-7">
+      <div class="chart-header">
+        <div class="chart-title"><span class="dot" style="background:#ef4444"></span>7. Pareto 80/20 Analysis — รายได้สะสมรายสินค้า</div>
+        <div class="chart-controls">
+          <select id="t7" onchange="renderC7()"><option value="pareto">Pareto (Bar + Cum %)</option><option value="hbar">แท่งแนวนอน (Ranked Bar)</option></select>
+          <button class="btn-preview" onclick="toggleDrawer('p7')">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            Data
+          </button>
+        </div>
+      </div>
+      <div class="canvas-wrapper"><canvas id="c7"></canvas></div>
+      <div class="preview-drawer" id="p7"><table class="preview-table" id="v7"></table></div>
+    </div>
+
+    <!-- Module 8: SKU Unit Economics -->
+    <div class="chart-card hidden" id="card-8">
+      <div class="chart-header">
+        <div class="chart-title"><span class="dot" style="background:#ec4899"></span>8. Unit Economics — เปรียบเทียบราคาขาย, ต้นทุน และกำไร/ชิ้น</div>
+        <div class="chart-controls">
+          <button class="btn-preview" onclick="toggleDrawer('p8')">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            Data
+          </button>
+        </div>
+      </div>
+      <div class="canvas-wrapper"><canvas id="c8"></canvas></div>
+      <div class="preview-drawer" id="p8"><table class="preview-table" id="v8"></table></div>
+    </div>
+  </main>
+
+  <!-- Master Transaction Explorer -->
+  <section class="master-table-card">
+    <div class="master-controls">
+      <div class="chart-title">
+        <svg class="ui-icon-md" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+        ตารางค้นหาธุรกรรมทั้งหมด (Transaction Explorer — S001 ถึง S100)
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="text" id="masterSearch" class="search-input" placeholder="ค้นหารหัส, สินค้า, สาขา, วันที่..." oninput="renderMasterTable()">
+        <button class="btn-action" onclick="exportMasterCSV()">
+          <svg class="ui-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          ดาวน์โหลดตารางนี้ (.CSV)
+        </button>
+      </div>
+    </div>
+    <div class="master-table-wrapper">
+      <table class="master-table" id="masterTable"></table>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    ชุดข้อมูลจาก <b>1Amazon_Quick_Workshop test.xlsx</b> (ชีต Sales ครบถ้วน 100 รายการ) · คำนวณรายได้ = จำนวนขาย × ราคาขาย | ต้นทุนรวม = จำนวนขาย × ต้นทุนต่อหน่วย | กำไรขั้นต้น = รายได้ − ต้นทุนรวม | Gross Margin % = กำไร ÷ รายได้ × 100<br>
+    Enterprise Executive Analytics Dashboard (Ultimate Edition) · 100% Zero External Dependencies · รันได้บนทุกเบราว์เซอร์แบบ Offline
+  </footer>
+</div>
+
+<div class="tooltip" id="globalTooltip"></div>
+
+<script>
+/* ===== RAW DATASET ===== */
+var RAW = [["S001", 1, 0, 6, 0, 14, 60, 20], ["S002", 1, 1, 2, 1, 6, 55, 18], ["S003", 1, 2, 4, 2, 5, 55, 22], ["S004", 1, 0, 5, 0, 7, 75, 28], ["S005", 2, 1, 7, 1, 5, 65, 25], ["S006", 2, 2, 3, 2, 4, 110, 72], ["S007", 2, 0, 1, 0, 20, 75, 27], ["S008", 3, 1, 0, 2, 6, 85, 60], ["S009", 3, 2, 5, 0, 9, 75, 28], ["S010", 3, 0, 7, 1, 13, 65, 25], ["S011", 4, 1, 3, 2, 13, 110, 72], ["S012", 4, 2, 1, 0, 12, 75, 27], ["S013", 4, 0, 0, 2, 16, 85, 60], ["S014", 5, 1, 6, 0, 8, 60, 20], ["S015", 5, 2, 2, 1, 9, 55, 18], ["S016", 5, 0, 4, 2, 19, 55, 22], ["S017", 5, 1, 1, 0, 5, 75, 27], ["S018", 6, 2, 0, 2, 2, 85, 60], ["S019", 6, 0, 6, 0, 16, 60, 20], ["S020", 6, 1, 2, 1, 6, 55, 18], ["S021", 7, 2, 4, 2, 9, 55, 22], ["S022", 7, 0, 5, 0, 19, 75, 28], ["S023", 7, 1, 7, 1, 9, 65, 25], ["S024", 8, 2, 3, 2, 4, 110, 72], ["S025", 8, 0, 2, 1, 8, 55, 18], ["S026", 8, 1, 4, 2, 14, 55, 22], ["S027", 9, 2, 5, 0, 9, 75, 28], ["S028", 9, 0, 7, 1, 11, 65, 25], ["S029", 9, 1, 3, 2, 13, 110, 72], ["S030", 9, 2, 1, 0, 6, 75, 27], ["S031", 10, 0, 0, 2, 12, 85, 60], ["S032", 10, 1, 6, 0, 6, 60, 20], ["S033", 10, 2, 7, 1, 11, 65, 25], ["S034", 11, 0, 3, 2, 13, 110, 72], ["S035", 11, 1, 1, 0, 3, 75, 27], ["S036", 11, 2, 0, 2, 12, 85, 60], ["S037", 12, 0, 6, 0, 14, 60, 20], ["S038", 12, 1, 2, 1, 14, 55, 18], ["S039", 12, 2, 4, 2, 3, 55, 22], ["S040", 13, 0, 5, 0, 13, 75, 28], ["S041", 13, 1, 0, 2, 9, 85, 60], ["S042", 13, 2, 6, 0, 10, 60, 20], ["S043", 14, 0, 2, 1, 14, 55, 18], ["S044", 14, 1, 4, 2, 4, 55, 22], ["S045", 14, 2, 5, 0, 3, 75, 28], ["S046", 14, 0, 7, 1, 11, 65, 25], ["S047", 15, 1, 3, 2, 3, 110, 72], ["S048", 15, 2, 1, 0, 4, 75, 27], ["S049", 15, 0, 4, 2, 12, 55, 22], ["S050", 16, 1, 5, 0, 12, 75, 28], ["S051", 16, 2, 7, 1, 11, 65, 25], ["S052", 16, 0, 3, 2, 15, 110, 72], ["S053", 17, 1, 1, 0, 11, 75, 27], ["S054", 17, 2, 0, 2, 2, 85, 60], ["S055", 17, 0, 6, 0, 20, 60, 20], ["S056", 18, 1, 2, 1, 14, 55, 18], ["S057", 18, 2, 3, 2, 9, 110, 72], ["S058", 18, 0, 1, 0, 19, 75, 27], ["S059", 18, 1, 0, 2, 3, 85, 60], ["S060", 19, 2, 6, 0, 12, 60, 20], ["S061", 19, 0, 2, 1, 10, 55, 18], ["S062", 19, 1, 4, 2, 4, 55, 22], ["S063", 20, 2, 5, 0, 15, 75, 28], ["S064", 20, 0, 7, 1, 19, 65, 25], ["S065", 20, 1, 6, 0, 5, 60, 20], ["S066", 21, 2, 2, 1, 2, 55, 18], ["S067", 21, 0, 4, 2, 20, 55, 22], ["S068", 21, 1, 5, 0, 14, 75, 28], ["S069", 22, 2, 7, 1, 5, 65, 25], ["S070", 22, 0, 3, 2, 13, 110, 72], ["S071", 22, 1, 1, 0, 7, 75, 27], ["S072", 23, 2, 0, 2, 8, 85, 60], ["S073", 23, 0, 5, 0, 10, 75, 28], ["S074", 23, 1, 7, 1, 2, 65, 25], ["S075", 23, 2, 3, 2, 9, 110, 72], ["S076", 24, 0, 1, 0, 19, 75, 27], ["S077", 24, 1, 0, 2, 9, 85, 60], ["S078", 24, 2, 6, 0, 12, 60, 20], ["S079", 25, 0, 2, 1, 8, 55, 18], ["S080", 25, 1, 4, 2, 10, 55, 22], ["S081", 25, 2, 1, 0, 7, 75, 27], ["S082", 26, 0, 0, 2, 9, 85, 60], ["S083", 26, 1, 6, 0, 15, 60, 20], ["S084", 26, 2, 2, 1, 10, 55, 18], ["S085", 27, 0, 4, 2, 8, 55, 22], ["S086", 27, 1, 5, 0, 10, 75, 28], ["S087", 27, 2, 7, 1, 11, 65, 25], ["S088", 27, 0, 3, 2, 7, 110, 72], ["S089", 28, 1, 2, 1, 11, 55, 18], ["S090", 28, 2, 4, 2, 2, 55, 22], ["S091", 28, 0, 5, 0, 14, 75, 28], ["S092", 29, 1, 7, 1, 10, 65, 25], ["S093", 29, 2, 3, 2, 5, 110, 72], ["S094", 29, 0, 1, 0, 7, 75, 27], ["S095", 30, 1, 0, 2, 15, 85, 60], ["S096", 30, 2, 6, 0, 8, 60, 20], ["S097", 30, 0, 7, 1, 20, 65, 25], ["S098", 31, 1, 3, 2, 14, 110, 72], ["S099", 31, 2, 1, 0, 5, 75, 27], ["S100", 31, 0, 0, 2, 15, 85, 60]];
+
+var BRANCHES = ["มหาวิทยาลัย", "สำนักงาน", "ห้างสรรพสินค้า"];
+var BRANCH_SHORT = ["มหาลัย", "สนง.", "ห้างฯ"];
+var PRODUCTS = ["ครัวซองต์", "คาปูชิโน", "ชาไทย", "ชีสเค้ก", "บราวนี", "ลาเต้", "อเมริกาโน", "โกโก้"];
+var CATEGORIES = ["กาแฟ", "เครื่องดื่มอื่น", "เบเกอรี"];
+var DAYS_OF_WEEK = ["จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์", "อาทิตย์"];
+var PALETTE = ["#ff9838", "#3b82f6", "#22c55e", "#a855f7", "#ef4444", "#06b6d4", "#f59e0b", "#ec4899"];
+
+var FD = [];
+var sortCol = 'id';
+var sortAsc = true;
+var visibleCharts = { 1: true, 2: true, 3: false, 4: false, 5: false, 6: true, 7: true, 8: false };
+
+function F(n) { return (n == null ? 0 : n).toLocaleString('th-TH'); }
+function P(n) { return (n == null ? 0 : n).toFixed(1); }
+function $(id) { return document.getElementById(id); }
+function toggleDrawer(id) { var el = $(id); if (el) el.classList.toggle('open'); }
+
+function getThemeCol(key) {
+  var isDark = (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
+  var darkCols = {
+    bg: '#060919',
+    textMain: '#eef2ff',
+    textMuted: '#8b9cc7',
+    textDim: '#4a5a80',
+    grid: 'rgba(255, 255, 255, 0.08)',
+    orange: '#ff9838',
+    blue: '#3b82f6',
+    green: '#22c55e',
+    purple: '#a855f7',
+    red: '#ef4444',
+    cyan: '#06b6d4',
+    pink: '#ec4899',
+    amber: '#f59e0b'
+  };
+  var lightCols = {
+    bg: '#f4f6fc',
+    textMain: '#0f172a',
+    textMuted: '#475569',
+    textDim: '#94a3b8',
+    grid: 'rgba(0, 0, 0, 0.08)',
+    orange: '#e67300',
+    blue: '#2563eb',
+    green: '#16a34a',
+    purple: '#9333ea',
+    red: '#dc2626',
+    cyan: '#0891b2',
+    pink: '#db2777',
+    amber: '#d97706'
+  };
+  return isDark ? (darkCols[key] || '#ffffff') : (lightCols[key] || '#000000');
+}
+
+/* Theme Handler */
+function toggleTheme() {
+  var html = document.documentElement;
+  var cur = html.getAttribute('data-theme') || 'dark';
+  var next = cur === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  var tBtn = $('themeTxt');
+  if (tBtn) tBtn.textContent = next === 'dark' ? 'Light Mode' : 'Dark Mode';
+  renderAllCharts();
+}
+
+/* ===== CHART VISIBILITY & PRESET SYSTEM ===== */
+function updateChartUI() {
+  var count = 0;
+  for (var i = 1; i <= 8; i++) {
+    var card = $('card-' + i);
+    var chip = $('chip-' + i);
+    var isVis = !!visibleCharts[i];
+    if (isVis) count++;
+    if (card) {
+      if (isVis) card.classList.remove('hidden');
+      else card.classList.add('hidden');
+    }
+    if (chip) {
+      if (isVis) chip.classList.add('active');
+      else chip.classList.remove('active');
+    }
+  }
+  var badge = $('chartCountBadge');
+  if (badge) badge.textContent = 'แสดง ' + count + ' / 8 กราฟ';
+
+  var pExec = [1,2,6,7].every(function(k){ return visibleCharts[k]; }) && [3,4,5,8].every(function(k){ return !visibleCharts[k]; });
+  var pProd = [2,4,7,8].every(function(k){ return visibleCharts[k]; }) && [1,3,5,6].every(function(k){ return !visibleCharts[k]; });
+  var pOps = [1,3,5,8].every(function(k){ return visibleCharts[k]; }) && [2,4,6,7].every(function(k){ return !visibleCharts[k]; });
+  var pAll = [1,2,3,4,5,6,7,8].every(function(k){ return visibleCharts[k]; });
+
+  if ($('btnP-exec')) $('btnP-exec').className = 'btn-preset' + (pExec ? ' active' : '');
+  if ($('btnP-prod')) $('btnP-prod').className = 'btn-preset' + (pProd ? ' active' : '');
+  if ($('btnP-ops')) $('btnP-ops').className = 'btn-preset' + (pOps ? ' active' : '');
+  if ($('btnP-all')) $('btnP-all').className = 'btn-preset' + (pAll ? ' active' : '');
+
+  setTimeout(renderAllCharts, 20);
+}
+
+function toggleChart(num) {
+  visibleCharts[num] = !visibleCharts[num];
+  var any = Object.values(visibleCharts).some(function(v){ return v; });
+  if (!any) visibleCharts[num] = true;
+  updateChartUI();
+}
+
+function setChartPreset(preset) {
+  for (var i = 1; i <= 8; i++) visibleCharts[i] = false;
+  if (preset === 'exec') {
+    visibleCharts[1] = true; visibleCharts[2] = true; visibleCharts[6] = true; visibleCharts[7] = true;
+  } else if (preset === 'prod') {
+    visibleCharts[2] = true; visibleCharts[4] = true; visibleCharts[7] = true; visibleCharts[8] = true;
+  } else if (preset === 'ops') {
+    visibleCharts[1] = true; visibleCharts[3] = true; visibleCharts[5] = true; visibleCharts[8] = true;
+  } else if (preset === 'all') {
+    for (var i = 1; i <= 8; i++) visibleCharts[i] = true;
+  }
+  updateChartUI();
+}
+
+/* Master Filter Application */
+function applyFilters() {
+  var fb = parseInt($('fBranch').value);
+  var fc = parseInt($('fCat').value);
+  var fp = parseInt($('fProd').value);
+  var fDate = $('fDate').value;
+  var fDayType = $('fDayType').value;
+  var fMarginTier = $('fMarginTier').value;
+
+  FD = [];
+  for (var i = 0; i < RAW.length; i++) {
+    var r = RAW[i];
+    var id = r[0], d = r[1], bi = r[2], pi = r[3], ci = r[4], qty = r[5], pr = r[6], co = r[7];
+    
+    if (fb >= 0 && bi !== fb) continue;
+    if (fc >= 0 && ci !== fc) continue;
+    if (fp >= 0 && pi !== fp) continue;
+
+    // Date range
+    if (fDate === 'w1' && (d < 1 || d > 7)) continue;
+    if (fDate === 'w2' && (d < 8 || d > 14)) continue;
+    if (fDate === 'w3' && (d < 15 || d > 21)) continue;
+    if (fDate === 'w4' && (d < 22 || d > 28)) continue;
+    if (fDate === 'w5' && (d < 29 || d > 31)) continue;
+
+    // Day type (2026-08-01 is Saturday)
+    var dow = new Date(2026, 7, d).getDay();
+    var isWeekend = (dow === 0 || dow === 6);
+    if (fDayType === 'weekday' && isWeekend) continue;
+    if (fDayType === 'weekend' && !isWeekend) continue;
+
+    var rev = qty * pr;
+    var cost = qty * co;
+    var prof = rev - cost;
+    var mg = rev > 0 ? (prof / rev) * 100 : 0;
+
+    if (fMarginTier === 'high' && mg < 60) continue;
+    if (fMarginTier === 'mid' && (mg < 40 || mg >= 60)) continue;
+    if (fMarginTier === 'low' && mg >= 40) continue;
+
+    FD.push({
+      id: id, d: d, bi: bi, pi: pi, ci: ci,
+      q: qty, pr: pr, co: co, rev: rev, cost: cost, prof: prof, mg: mg,
+      dow: dow === 0 ? 6 : dow - 1, isWeekend: isWeekend
+    });
+  }
+
+  var pct = (FD.length / RAW.length * 100).toFixed(0);
+  $('filterCount').textContent = 'แสดง ' + FD.length + ' / ' + RAW.length + ' รายการ (' + pct + '%)';
+
+  // Active pills
+  var pills = [];
+  if (fb >= 0) pills.push('สาขา: ' + BRANCHES[fb]);
+  if (fc >= 0) pills.push('หมวด: ' + CATEGORIES[fc]);
+  if (fp >= 0) pills.push('สินค้า: ' + PRODUCTS[fp]);
+  if (fDate !== 'all') pills.push('ช่วง: ' + fDate.toUpperCase());
+  if (fDayType !== 'all') pills.push(fDayType === 'weekday' ? 'จันทร์-ศุกร์' : 'เสาร์-อาทิตย์');
+  if (fMarginTier !== 'all') pills.push('Margin: ' + fMarginTier);
+  $('activeFilterPills').innerHTML = pills.map(function(p){ return '<span class="pill">' + p + '</span>'; }).join('');
+
+  renderKPIs();
+  renderInsights();
+  renderAllCharts();
+  renderMasterTable();
+}
+
+function resetFilters() {
+  $('fBranch').value = '-1';
+  $('fCat').value = '-1';
+  $('fProd').value = '-1';
+  $('fDate').value = 'all';
+  $('fDayType').value = 'all';
+  $('fMarginTier').value = 'all';
+  applyFilters();
+}
+
+/* Render KPI Cards (8 Cards) */
+function renderKPIs() {
+  var rev = 0, cost = 0, prof = 0, qty = 0;
+  var daysSet = {};
+  for (var i = 0; i < FD.length; i++) {
+    rev += FD[i].rev;
+    cost += FD[i].cost;
+    prof += FD[i].prof;
+    qty += FD[i].q;
+    daysSet[FD[i].d] = true;
+  }
+  var numDays = Object.keys(daysSet).length || 1;
+  var numTx = FD.length || 1;
+  var grossMargin = rev > 0 ? (prof / rev) * 100 : 0;
+  var avgDaily = rev / numDays;
+  var aov = rev / numTx;
+  var avgProfitPerUnit = qty > 0 ? (prof / qty) : 0;
+
+  var cards = [
+    { l: 'รายได้รวม (Revenue)', v: F(rev), s: 'บาท (THB)', c: '#ff9838' },
+    { l: 'ต้นทุนรวม (Cost)', v: F(cost), s: 'บาท (THB)', c: '#ef4444' },
+    { l: 'กำไรขั้นต้น (Profit)', v: F(prof), s: 'บาท (THB)', c: '#22c55e' },
+    { l: 'Gross Margin %', v: P(grossMargin) + '%', s: 'กำไร ÷ รายได้', c: '#a855f7' },
+    { l: 'หน่วยขายรวม (Volume)', v: F(qty), s: 'หน่วย (Units)', c: '#3b82f6' },
+    { l: 'ยอดขายเฉลี่ย/วัน', v: F(Math.round(avgDaily)), s: 'บาท/วัน (' + numDays + ' วัน)', c: '#06b6d4' },
+    { l: 'เฉลี่ยต่อบิล (AOV)', v: F(Math.round(aov)), s: 'บาท/รายการ', c: '#f59e0b' },
+    { l: 'กำไรเฉลี่ย/ชิ้น', v: F(Math.round(avgProfitPerUnit)), s: 'บาท/หน่วย', c: '#ec4899' }
+  ];
+
+  $('kpiContainer').innerHTML = cards.map(function(c){
+    return '<div class="kpi-card"><div class="kpi-label">' + c.l + '</div><div class="kpi-val" style="color:' + c.c + '">' + c.v + '</div><div class="kpi-sub">' + c.s + '</div></div>';
+  }).join('');
+}
+
+/* Render Executive Insights & Strategic Advice */
+function renderInsights() {
+  if (FD.length === 0) {
+    $('insightList').innerHTML = '<div class="insight-item">ไม่พบข้อมูลตามตัวกรองที่เลือก</div>';
+    return;
+  }
+
+  var rev = 0, prof = 0, qty = 0;
+  var pStats = {}, bStats = {}, dStats = {}, wStats = { wdRev: 0, weRev: 0, wdCnt: 0, weCnt: 0 };
+  
+  for (var i = 0; i < FD.length; i++) {
+    var f = FD[i];
+    rev += f.rev; prof += f.prof; qty += f.q;
+
+    var pn = PRODUCTS[f.pi];
+    if (!pStats[pn]) pStats[pn] = { r: 0, p: 0, q: 0 };
+    pStats[pn].r += f.rev; pStats[pn].p += f.prof; pStats[pn].q += f.q;
+
+    var bn = BRANCHES[f.bi];
+    if (!bStats[bn]) bStats[bn] = { r: 0, p: 0, q: 0 };
+    bStats[bn].r += f.rev; bStats[bn].p += f.prof; bStats[bn].q += f.q;
+
+    if (!dStats[f.d]) dStats[f.d] = { r: 0, p: 0 };
+    dStats[f.d].r += f.rev; dStats[f.d].p += f.prof;
+
+    if (f.isWeekend) { wStats.weRev += f.rev; wStats.weCnt += f.q; }
+    else { wStats.wdRev += f.rev; wStats.wdCnt += f.q; }
+  }
+
+  var sortedProd = Object.entries(pStats).sort(function(a,b){ return b[1].r - a[1].r; });
+  var sortedMargin = Object.entries(pStats).map(function(e){ return { name: e[0], mg: e[1].r ? e[1].p / e[1].r * 100 : 0 }; }).sort(function(a,b){ return b.mg - a.mg; });
+  var sortedBranch = Object.entries(bStats).sort(function(a,b){ return b[1].r - a[1].r; });
+  var sortedDays = Object.entries(dStats).sort(function(a,b){ return b[1].r - a[1].r; });
+
+  var items = [];
+  
+  // Top 3 Products
+  if (sortedProd.length >= 3) {
+    items.push('<div class="insight-item"><span class="tag tag-top">Top 3 Revenue</span>สินค้าทำเงินสูงสุด 3 อันดับแรก: ' + sortedProd.slice(0,3).map(function(p, idx){ return '<b>#' + (idx+1) + ' ' + p[0] + '</b> (' + F(p[1].r) + '฿)'; }).join(', ') + '</div>');
+  } else if (sortedProd.length > 0) {
+    items.push('<div class="insight-item"><span class="tag tag-top">Top Revenue</span>สินค้าทำเงินสูงสุด: <b>' + sortedProd[0][0] + '</b> (' + F(sortedProd[0][1].r) + '฿)</div>');
+  }
+
+  // Margin extremes
+  if (sortedMargin.length > 0) {
+    var highM = sortedMargin[0];
+    var lowM = sortedMargin[sortedMargin.length - 1];
+    items.push('<div class="insight-item"><span class="tag tag-strat">Profitability</span>อัตรากำไรสูงสุด: <b>' + highM.name + ' (' + P(highM.mg) + '%)</b> | ต่ำสุด: <b>' + lowM.name + ' (' + P(lowM.mg) + '%)</b></div>');
+  }
+
+  // Branch Performance
+  if (sortedBranch.length > 0) {
+    var leadB = sortedBranch[0];
+    var bPct = rev > 0 ? (leadB[1].r / rev * 100) : 0;
+    items.push('<div class="insight-item"><span class="tag tag-info">Market Share</span>สาขาผู้นำตลาด: <b>' + leadB[0] + '</b> ยอดขาย ' + F(leadB[1].r) + '฿ (' + P(bPct) + '% ของพอร์ตโฟลิโอ)</div>');
+  }
+
+  // Peak Days
+  if (sortedDays.length > 0) {
+    var bestDay = sortedDays[0];
+    var worstDay = sortedDays[sortedDays.length - 1];
+    items.push('<div class="insight-item"><span class="tag tag-warn">Daily Velocity</span>วันที่ขายดีที่สุด: <b>' + bestDay[0] + ' ส.ค. (' + F(bestDay[1].r) + '฿)</b> | ต่ำสุด: ' + worstDay[0] + ' ส.ค. (' + F(worstDay[1].r) + '฿)</div>');
+  }
+
+  // Weekday vs Weekend
+  var wePct = rev > 0 ? (wStats.weRev / rev * 100) : 0;
+  items.push('<div class="insight-item"><span class="tag tag-info">Traffic Pattern</span>สัดส่วนยอดขาย: <b>วันธรรมดา ' + F(wStats.wdRev) + '฿ (' + P(100 - wePct) + '%)</b> vs <b>วันหยุด ' + F(wStats.weRev) + '฿ (' + P(wePct) + '%)</b></div>');
+
+  // Actionable Strategy
+  items.push('<div class="insight-item"><span class="tag tag-strat">Strategic Action</span><b>ข้อเสนอแนะ:</b> ควรผลักดันแคมเปญ Combo Set คู่เครื่องดื่ม High Margin (' + (sortedMargin[0] ? sortedMargin[0].name : '') + ') ร่วมกับเบเกอรีเพื่อดัน Basket Size เพิ่มขึ้น</div>');
+
+  $('insightList').innerHTML = items.join('');
+}
+
+/* Canvas & Drawing Helpers */
+function getCanvasContext(id) {
+  var c = $(id);
+  if (!c) return null;
+  var dpr = window.devicePixelRatio || 1;
+  var rect = c.getBoundingClientRect();
+  var W = rect.width || c.clientWidth || 550;
+  var H = 250;
+  c.width = W * dpr;
+  c.height = H * dpr;
+  var ctx = c.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return { ctx: ctx, W: W, H: H };
+}
+
+function drawText(ctx, txt, x, y, col, sz, align, bold) {
+  ctx.fillStyle = col;
+  ctx.font = (bold ? 'bold ' : '') + sz + 'px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+  ctx.textAlign = align || 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(txt, x, y);
+}
+
+function buildTable(tid, headers, rows) {
+  var t = $(tid);
+  if (!t) return;
+  var h = '<thead><tr>' + headers.map(function(x){ return '<th>' + x + '</th>'; }).join('') + '</tr></thead><tbody>';
+  for (var i = 0; i < rows.length; i++) {
+    h += '<tr>' + rows[i].map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>';
+  }
+  t.innerHTML = h + '</tbody>';
+}
+
+/* ===== MODULE 1: DAILY TREND & MA7 ===== */
+function renderC1() {
+  if (!visibleCharts[1]) return;
+  var o = getCanvasContext('c1');
+  if (!o) return;
+  var ctx = o.ctx, W = o.W, H = o.H;
+  var mode = $('t1').value;
+  var days = []; for (var d = 1; d <= 31; d++) days.push(d);
+  var daily = {};
+  for (var i = 0; i < FD.length; i++) {
+    var f = FD[i];
+    if (!daily[f.d]) daily[f.d] = { r: 0, p: 0, c: 0, q: 0 };
+    daily[f.d].r += f.rev; daily[f.d].p += f.prof; daily[f.d].c += f.cost; daily[f.d].q += f.q;
+  }
+
+  var revs = days.map(function(d){ return daily[d] ? daily[d].r : 0; });
+  var profs = days.map(function(d){ return daily[d] ? daily[d].p : 0; });
+  var costs = days.map(function(d){ return daily[d] ? daily[d].c : 0; });
+  var ma7 = revs.map(function(v, idx){
+    if (idx < 6) return null;
+    var sum = 0; for (var j = idx - 6; j <= idx; j++) sum += revs[j];
+    return Math.round(sum / 7);
+  });
+
+  var L = 50, R = 20, T = 25, B = 30, cW = W - L - R, cH = H - T - B;
+  var maxVal = Math.max.apply(null, revs.concat([100]));
+  maxVal = Math.ceil(maxVal / 500) * 500 + 500;
+
+  // Grid
+  ctx.strokeStyle = getThemeCol('grid'); ctx.lineWidth = 1;
+  for (var i = 0; i <= 5; i++) {
+    var y = T + cH - (cH * i / 5);
+    ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(W - R, y); ctx.stroke();
+    drawText(ctx, F(Math.round(maxVal * i / 5)), L - 6, y, getThemeCol('textDim'), 8.5, 'right');
+  }
+
+  // X Labels
+  for (var i = 0; i < 31; i++) {
+    var x = L + cW * i / 30;
+    if (i % 3 === 0) drawText(ctx, (i + 1 < 10 ? '0' : '') + (i + 1), x, H - 10, getThemeCol('textDim'), 8.5, 'center');
+  }
+
+  if (mode === 'bar') {
+    var bw = cW / 31 * 0.42;
+    for (var i = 0; i < 31; i++) {
+      var x = L + cW * i / 30;
+      var hR = cH * revs[i] / maxVal;
+      var hP = cH * profs[i] / maxVal;
+      ctx.fillStyle = 'rgba(255, 152, 56, 0.8)';
+      ctx.fillRect(x - bw, T + cH - hR, bw - 1, hR);
+      ctx.fillStyle = 'rgba(34, 197, 94, 0.85)';
+      ctx.fillRect(x + 1, T + cH - hP, bw - 1, hP);
+    }
+  } else {
+    // Line or Area
+    if (mode === 'area') {
+      ctx.beginPath();
+      for (var i = 0; i < 31; i++) {
+        var x = L + cW * i / 30, y = T + cH - (cH * revs[i] / maxVal);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.lineTo(L + cW, T + cH); ctx.lineTo(L, T + cH); ctx.closePath();
+      ctx.fillStyle = 'rgba(255, 152, 56, 0.15)'; ctx.fill();
+    }
+    // Revenue Line
+    ctx.beginPath(); ctx.strokeStyle = '#ff9838'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round';
+    for (var i = 0; i < 31; i++) {
+      var x = L + cW * i / 30, y = T + cH - (cH * revs[i] / maxVal);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Profit Line
+    ctx.beginPath(); ctx.strokeStyle = '#22c55e'; ctx.lineWidth = 2;
+    for (var i = 0; i < 31; i++) {
+      var x = L + cW * i / 30, y = T + cH - (cH * profs[i] / maxVal);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Dots
+    for (var i = 0; i < 31; i++) {
+      var x = L + cW * i / 30;
+      ctx.beginPath(); ctx.arc(x, T + cH - (cH * revs[i] / maxVal), 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff9838'; ctx.fill();
+    }
+  }
+
+  // MA7 Trendline
+  ctx.beginPath(); ctx.strokeStyle = '#a855f7'; ctx.lineWidth = 2; ctx.setLineDash([5, 3]); ctx.lineJoin = 'round';
+  var maStarted = false;
+  for (var i = 0; i < 31; i++) {
+    if (ma7[i] === null) continue;
+    var x = L + cW * i / 30, y = T + cH - (cH * ma7[i] / maxVal);
+    if (!maStarted) { ctx.moveTo(x, y); maStarted = true; } else ctx.lineTo(x, y);
+  }
+  ctx.stroke(); ctx.setLineDash([]);
+
+  // Legend
+  var leg = [['รายได้ (Rev)', '#ff9838'], ['กำไร (Profit)', '#22c55e'], ['MA7 Trend', '#a855f7']];
+  for (var i = 0; i < leg.length; i++) {
+    ctx.fillStyle = leg[i][1]; ctx.fillRect(L + 8 + i * 85, T + 2, 10, 6);
+    drawText(ctx, leg[i][0], L + 22 + i * 85, T + 5, getThemeCol('textMuted'), 9, 'left');
+  }
+
+  // Table
+  buildTable('v1', ['วันที่', 'รายได้', 'กำไร', 'ต้นทุน', 'MA7 Trend'], days.map(function(d, i){
+    return [(d < 10 ? '0' : '') + d + ' ส.ค.', F(revs[i]) + '฿', F(profs[i]) + '฿', F(costs[i]) + '฿', ma7[i] !== null ? F(ma7[i]) + '฿' : '-'];
+  }));
+
+  // Interactive Hover
+  $('c1').onmousemove = function(e) {
+    var rect = this.getBoundingClientRect();
+    var mx = e.clientX - rect.left;
+    var idx = Math.round((mx - L) / cW * 30);
+    if (idx < 0) idx = 0; if (idx > 30) idx = 30;
+    var d = days[idx], v = daily[d] || { r: 0, p: 0, c: 0, q: 0 };
+    var mg = v.r > 0 ? (v.p / v.r * 100) : 0;
+    var tt = $('globalTooltip');
+    tt.style.display = 'block';
+    tt.style.left = (e.clientX + 14) + 'px';
+    tt.style.top = (e.clientY - 12) + 'px';
+    tt.innerHTML = '<b>' + d + ' สิงหาคม 2569</b><br>รายได้: ' + F(v.r) + ' ฿<br>กำไร: ' + F(v.p) + ' ฿<br>ต้นทุน: ' + F(v.c) + ' ฿<br>Margin: ' + P(mg) + '%<br>ปริมาณ: ' + v.q + ' หน่วย' + (ma7[idx] !== null ? '<br>MA7: ' + F(ma7[idx]) + ' ฿' : '');
+  };
+  $('c1').onmouseleave = function(){ $('globalTooltip').style.display = 'none'; };
+}
+
+/* ===== MODULE 2: BRANCH x PRODUCT HEATMAP ===== */
+function renderH2() {
+  if (!visibleCharts[2]) return;
+  var metric = $('m2').value;
+  var map = {};
+  for (var i = 0; i < FD.length; i++) {
+    var f = FD[i], k = f.bi + '|' + f.pi;
+    if (!map[k]) map[k] = { r: 0, p: 0, q: 0 };
+    map[k].r += f.rev; map[k].p += f.prof; map[k].q += f.q;
+  }
+
+  var vals = [];
+  for (var bi = 0; bi < 3; bi++) {
+    for (var pi = 0; pi < PRODUCTS.length; pi++) {
+      var d = map[bi + '|' + pi] || { r: 0, p: 0, q: 0 };
+      var mg = d.r > 0 ? (d.p / d.r * 100) : 0;
+      vals.push(metric === 'm' ? mg : (metric === 'r' ? d.r : (metric === 'p' ? d.p : d.q)));
+    }
+  }
+
+  var minV = Math.min.apply(null, vals), maxV = Math.max.apply(null, vals);
+  if (maxV === minV) maxV = minV + 1;
+
+  var el = $('h2');
+  if (!el) return;
+  el.innerHTML = '';
+  el.style.gridTemplateColumns = '55px repeat(' + PRODUCTS.length + ', 1fr)';
+  el.className = 'heatmap-grid';
+
+  // Header Row
+  el.innerHTML += '<div class="hm-lbl"></div>';
+  for (var pi = 0; pi < PRODUCTS.length; pi++) {
+    el.innerHTML += '<div class="hm-lbl">' + PRODUCTS[pi] + '</div>';
+  }
+
+  var tableRows = [];
+  for (var bi = 0; bi < 3; bi++) {
+    el.innerHTML += '<div class="hm-lbl" style="text-align:right;">' + BRANCH_SHORT[bi] + '</div>';
+    for (var pi = 0; pi < PRODUCTS.length; pi++) {
+      var d = map[bi + '|' + pi] || { r: 0, p: 0, q: 0 };
+      var mg = d.r > 0 ? (d.p / d.r * 100) : 0;
+      var v = (metric === 'm' ? mg : (metric === 'r' ? d.r : (metric === 'p' ? d.p : d.q)));
+      var norm = (v - minV) / (maxV - minV);
+      var hue = Math.round(15 + norm * 35);
+      var sat = Math.round(75 + norm * 20);
+      var light = Math.round(20 + norm * 35);
+      var vText = metric === 'm' ? P(v) + '%' : F(Math.round(v));
+
+      tableRows.push([BRANCHES[bi], PRODUCTS[pi], F(d.r) + '฿', F(d.p) + '฿', P(mg) + '%', F(d.q)]);
+
+      el.innerHTML += '<div class="hm-cell" style="background:hsl(' + hue + ',' + sat + '%,' + light + '%)">' +
+        '<div class="hm-tooltip"><b>' + BRANCHES[bi] + ' × ' + PRODUCTS[pi] + '</b><br>รายได้: ' + F(d.r) + '฿<br>กำไร: ' + F(d.p) + '฿<br>Margin: ' + P(mg) + '%<br>ปริมาณ: ' + d.q + ' ชิ้น</div>' +
+        vText + '</div>';
+    }
+  }
+
+  buildTable('v2', ['สาขา', 'สินค้า', 'รายได้', 'กำไร', 'Margin%', 'ปริมาณ (หน่วย)'], tableRows);
+}
+
+/* ===== MODULE 3: DAY OF WEEK x BRANCH HEATMAP ===== */
+function renderH3() {
+  if (!visibleCharts[3]) return;
+  var metric = $('m3').value;
+  var map = {};
+  for (var i = 0; i < FD.length; i++) {
+    var f = FD[i], k = f.dow + '|' + f.bi;
+    if (!map[k]) map[k] = { r: 0, p: 0, q: 0 };
+    map[k].r += f.rev; map[k].p += f.prof; map[k].q += f.q;
+  }
+
+  var vals = [];
+  for (var w = 0; w < 7; w++) {
+    for (var bi = 0; bi < 3; bi++) {
+      var d = map[w + '|' + bi] || { r: 0, p: 0, q: 0 };
+      vals.push(d[metric]);
+    }
+  }
+
+  var minV = Math.min.apply(null, vals), maxV = Math.max.apply(null, vals);
+  if (maxV === minV) maxV = minV + 1;
+
+  var el = $('h3');
+  if (!el) return;
+  el.innerHTML = '';
+  el.style.gridTemplateColumns = '65px repeat(3, 1fr)';
+  el.className = 'heatmap-grid';
+
+  // Header
+  el.innerHTML += '<div class="hm-lbl"></div>';
+  for (var bi = 0; bi < 3; bi++) {
+    el.innerHTML += '<div class="hm-lbl">' + BRANCHES[bi] + '</div>';
+  }
+
+  var tableRows = [];
+  for (var w = 0; w < 7; w++) {
+    el.innerHTML += '<div class="hm-lbl" style="text-align:right;">' + DAYS_OF_WEEK[w] + '</div>';
+    for (var bi = 0; bi < 3; bi++) {
+      var d = map[w + '|' + bi] || { r: 0, p: 0, q: 0 };
+      var v = d[metric];
+      var norm = (v - minV) / (maxV - minV);
+      var hue = Math.round(205 + norm * 25);
+      var sat = Math.round(65 + norm * 30);
+      var light = Math.round(18 + norm * 42);
+
+      tableRows.push([DAYS_OF_WEEK[w], BRANCHES[bi], F(d.r) + '฿', F(d.p) + '฿', F(d.q)]);
+
+      el.innerHTML += '<div class="hm-cell" style="background:hsl(' + hue + ',' + sat + '%,' + light + '%)">' +
+        '<div class="hm-tooltip"><b>' + DAYS_OF_WEEK[w] + ' × ' + BRANCHES[bi] + '</b><br>รายได้: ' + F(d.r) + '฿<br>กำไร: ' + F(d.p) + '฿<br>ปริมาณ: ' + d.q + ' ชิ้น</div>' +
+        F(v) + '</div>';
+    }
+  }
+
+  buildTable('v3', ['วันในสัปดาห์', 'สาขา', 'รายได้', 'กำไร', 'ปริมาณ'], tableRows);
+}
+
+/* ===== MODULE 4: BCG MATRIX (PORTFOLIO ANALYSIS) ===== */
+function renderC4() {
+  if (!visibleCharts[4]) return;
+  var o = getCanvasContext('c4');
+  if (!o) return;
+  var ctx = o.ctx, W = o.W, H = o.H;
+  var pMap = {};
+  for (var i = 0; i < FD.length; i++) {
+    var f = FD[i], pn = PRODUCTS[f.pi];
+    if (!pMap[pn]) pMap[pn] = { r: 0, p: 0, q: 0, ci: f.ci };
+    pMap[pn].r += f.rev; pMap[pn].p += f.prof; pMap[pn].q += f.q;
+  }
+
+  var items = Object.entries(pMap).map(function(e){
+    var mg = e[1].r > 0 ? (e[1].p / e[1].r * 100) : 0;
+    return { name: e[0], r: e[1].r, p: e[1].p, q: e[1].q, mg: mg, ci: e[1].ci };
+  });
+
+  var L = 50, R = 25, T = 25, B = 35, cW = W - L - R, cH = H - T - B;
+  var maxQ = Math.max.apply(null, items.map(function(x){ return x.q; }).concat([50]));
+  maxQ = Math.ceil(maxQ / 20) * 20 + 10;
+  var maxM = 100;
+
+  // Quadrant Background Zones
+  var midX = L + cW * 0.5, midY = T + cH * 0.45;
+  ctx.fillStyle = 'rgba(34, 197, 94, 0.05)'; ctx.fillRect(midX, T, cW * 0.5, midY - T);
+  ctx.fillStyle = 'rgba(59, 130, 246, 0.05)'; ctx.fillRect(midX, midY, cW * 0.5, T + cH - midY);
+  ctx.fillStyle = 'rgba(168, 85, 247, 0.05)'; ctx.fillRect(L, T, midX - L, midY - T);
+
+  // Cross lines
+  ctx.strokeStyle = getThemeCol('grid'); ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(midX, T); ctx.lineTo(midX, T + cH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(L, midY); ctx.lineTo(W - R, midY); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Quadrant Labels (Enterprise Terminology)
+  drawText(ctx, 'STARS (High Volume, High Margin)', W - R - 10, T + 10, 'rgba(34, 197, 94, 0.85)', 8.5, 'right', true);
+  drawText(ctx, 'OPPORTUNITY (Low Volume, High Margin)', L + 10, T + 10, 'rgba(168, 85, 247, 0.85)', 8.5, 'left', true);
+  drawText(ctx, 'CASH COWS (High Volume, Moderate Margin)', W - R - 10, H - B - 8, 'rgba(59, 130, 246, 0.85)', 8.5, 'right', true);
+  drawText(ctx, 'LOW VOLUME (Low Volume, Moderate Margin)', L + 10, H - B - 8, getThemeCol('textDim'), 8.5, 'left', true);
+
+  // Axes Labels
+  drawText(ctx, 'ปริมาณขายรวม (Units) →', L + cW / 2, H - 10, getThemeCol('textMuted'), 9.5, 'center', true);
+
+  // Plot Bubbles
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i];
+    var x = L + cW * (it.q / maxQ);
+    var y = T + cH - (cH * (it.mg / maxM));
+    var radius = Math.max(7, Math.min(18, Math.sqrt(it.r) * 0.12));
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = PALETTE[i % PALETTE.length];
+    ctx.globalAlpha = 0.85;
+    ctx.fill();
+    ctx.globalAlpha = 1.0;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    drawText(ctx, it.name, x, y - radius - 6, getThemeCol('textMain'), 9, 'center', true);
+  }
+
+  buildTable('v4', ['สินค้า', 'ปริมาณขาย (หน่วย)', 'รายได้รวม', 'กำไรขั้นต้น', 'Margin %', 'สถานะ BCG'], items.map(function(it){
+    var status = (it.q >= maxQ * 0.5 ? (it.mg >= 55 ? 'Stars' : 'Cash Cow') : (it.mg >= 55 ? 'Opportunity' : 'Low Volume'));
+    return [it.name, F(it.q), F(it.r) + '฿', F(it.p) + '฿', P(it.mg) + '%', status];
+  }));
+
+  $('c4').onmousemove = function(e) {
+    var rect = this.getBoundingClientRect();
+    var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    var hovered = null;
+    for (var i = 0; i < items.length; i++) {
+      var it = items[i];
+      var x = L + cW * (it.q / maxQ);
+      var y = T + cH - (cH * (it.mg / maxM));
+      var radius = Math.max(7, Math.min(18, Math.sqrt(it.r) * 0.12));
+      var dist = Math.hypot(mx - x, my - y);
+      if (dist <= radius + 6) { hovered = it; break; }
+    }
+    var tt = $('globalTooltip');
+    if (hovered) {
+      tt.style.display = 'block';
+      tt.style.left = (e.clientX + 14) + 'px';
+      tt.style.top = (e.clientY - 10) + 'px';
+      tt.innerHTML = '<b>' + hovered.name + '</b><br>ปริมาณ: ' + F(hovered.q) + ' หน่วย<br>รายได้: ' + F(hovered.r) + ' ฿<br>กำไร: ' + F(hovered.p) + ' ฿<br>Margin: ' + P(hovered.mg) + '%';
+    } else {
+      tt.style.display = 'none';
+    }
+  };
+  $('c4').onmouseleave = function(){ $('globalTooltip').style.display = 'none'; };
+}
+
+/* ===== MODULE 5: BRANCH x CATEGORY DISTRIBUTION ===== */
+function renderC5() {
+  if (!visibleCharts[5]) return;
+  var o = getCanvasContext('c5');
+  if (!o) return;
+  var ctx = o.ctx, W = o.W, H = o.H;
+  var mode = $('t5').value;
+
+  var map = {};
+  for (var i = 0; i < FD.length; i++) {
+    var f = FD[i], k = f.bi + '|' + f.ci;
+    if (!map[k]) map[k] = 0;
+    map[k] += f.rev;
+  }
+
+  var totals = [0, 0, 0];
+  for (var bi = 0; bi < 3; bi++) {
+    for (var ci = 0; ci < 3; ci++) totals[bi] += (map[bi + '|' + ci] || 0);
+  }
+
+  var L = 50, R = 20, T = 25, B = 30, cW = W - L - R, cH = H - T - B;
+  var maxVal = mode === 'pct' ? 100 : Math.ceil(Math.max.apply(null, totals) / 5000) * 5000 + 2000;
+
+  // Grid
+  ctx.strokeStyle = getThemeCol('grid'); ctx.lineWidth = 1;
+  for (var i = 0; i <= 5; i++) {
+    var y = T + cH - (cH * i / 5);
+    ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(W - R, y); ctx.stroke();
+    drawText(ctx, mode === 'pct' ? (i * 20) + '%' : F(Math.round(maxVal * i / 5)), L - 6, y, getThemeCol('textDim'), 8.5, 'right');
+  }
+
+  var catColors = ['#ff9838', '#3b82f6', '#a855f7'];
+  var bw = cW / 3 * 0.55;
+  var tableRows = [];
+
+  for (var bi = 0; bi < 3; bi++) {
+    var x = L + cW * (bi + 0.5) / 3;
+    if (mode === 'group') {
+      var gw = bw / 3;
+      for (var ci = 0; ci < 3; ci++) {
+        var val = map[bi + '|' + ci] || 0;
+        var barH = cH * val / maxVal;
+        ctx.fillStyle = catColors[ci];
+        ctx.fillRect(x - bw / 2 + ci * gw, T + cH - barH, gw - 2, barH);
+        tableRows.push([BRANCHES[bi], CATEGORIES[ci], F(val) + '฿']);
+      }
+    } else {
+      var cumH = 0;
+      for (var ci = 0; ci < 3; ci++) {
+        var val = map[bi + '|' + ci] || 0;
+        var pVal = mode === 'pct' ? (totals[bi] ? val / totals[bi] * 100 : 0) : val;
+        var barH = cH * pVal / maxVal;
+        ctx.fillStyle = catColors[ci];
+        ctx.fillRect(x - bw / 2, T + cH - cumH - barH, bw, barH);
+        if (barH > 14) {
+          drawText(ctx, mode === 'pct' ? Math.round(pVal) + '%' : F(val), x, T + cH - cumH - barH / 2, '#fff', 9, 'center', true);
+        }
+        cumH += barH;
+        tableRows.push([BRANCHES[bi], CATEGORIES[ci], F(val) + '฿']);
+      }
+    }
+    drawText(ctx, BRANCH_SHORT[bi], x, H - 10, getThemeCol('textMuted'), 9.5, 'center', true);
+  }
+
+  // Legend
+  for (var i = 0; i < CATEGORIES.length; i++) {
+    ctx.fillStyle = catColors[i]; ctx.fillRect(L + 8 + i * 85, T + 2, 10, 6);
+    drawText(ctx, CATEGORIES[i], L + 22 + i * 85, T + 5, getThemeCol('textMuted'), 9, 'left');
+  }
+
+  buildTable('v5', ['สาขา', 'หมวดหมู่', 'รายได้'], tableRows);
+}
+
+/* ===== MODULE 6: BRANCH MARKET SHARE ===== */
+function renderC6() {
+  if (!visibleCharts[6]) return;
+  var o = getCanvasContext('c6');
+  if (!o) return;
+  var ctx = o.ctx, W = o.W, H = o.H;
+  var mode = $('t6').value;
+
+  var bRev = [0, 0, 0], bProf = [0, 0, 0], bQty = [0, 0, 0];
+  for (var i = 0; i < FD.length; i++) {
+    var f = FD[i];
+    bRev[f.bi] += f.rev; bProf[f.bi] += f.prof; bQty[f.bi] += f.q;
+  }
+  var totalRev = bRev[0] + bRev[1] + bRev[2];
+  var bColors = ['#3b82f6', '#ff9838', '#22c55e'];
+
+  if (mode === 'bar') {
+    var L = 80, R = 20, T = 20, B = 20, cW = W - L - R, cH = H - T - B;
+    var maxB = Math.max.apply(null, bRev) * 1.15 || 1;
+    var bh = cH / 3 * 0.65;
+    for (var i = 0; i < 3; i++) {
+      var y = T + cH * (i + 0.5) / 3;
+      var barW = cW * bRev[i] / maxB;
+      ctx.fillStyle = bColors[i];
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(L, y - bh / 2, barW, bh, [0, 6, 6, 0]);
+      else ctx.rect(L, y - bh / 2, barW, bh);
+      ctx.fill();
+
+      drawText(ctx, BRANCHES[i], L - 8, y, getThemeCol('textMuted'), 10, 'right', true);
+      var pct = totalRev > 0 ? (bRev[i] / totalRev * 100) : 0;
+      drawText(ctx, F(bRev[i]) + '฿ (' + P(pct) + '%)', L + barW + 8, y, getThemeCol('textMain'), 10, 'left', true);
+    }
+  } else {
+    // Donut / Pie
+    var cx = W / 2, cy = H / 2, radius = Math.min(W, H) / 2 - 25;
+    var inner = mode === 'donut' ? radius * 0.55 : 0;
+    var startAngle = -Math.PI / 2;
+
+    for (var i = 0; i < 3; i++) {
+      var angle = totalRev > 0 ? (bRev[i] / totalRev * Math.PI * 2) : 0;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, startAngle, startAngle + angle);
+      ctx.arc(cx, cy, inner, startAngle + angle, startAngle, true);
+      ctx.closePath();
+      ctx.fillStyle = bColors[i]; ctx.fill();
+      ctx.strokeStyle = getThemeCol('bg'); ctx.lineWidth = 3; ctx.stroke();
+
+      var midAngle = startAngle + angle / 2;
+      var lx = cx + Math.cos(midAngle) * (radius + inner) / 2;
+      var ly = cy + Math.sin(midAngle) * (radius + inner) / 2;
+      if (angle > 0.3) {
+        drawText(ctx, BRANCH_SHORT[i], lx, ly - 7, '#fff', 9.5, 'center', true);
+        drawText(ctx, P(totalRev > 0 ? bRev[i] / totalRev * 100 : 0) + '%', lx, ly + 7, '#fff', 11, 'center', true);
+      }
+      startAngle += angle;
+    }
+
+    if (mode === 'donut') {
+      drawText(ctx, F(totalRev), cx, cy - 6, getThemeCol('textMain'), 16, 'center', true);
+      drawText(ctx, 'บาท (THB)', cx, cy + 12, getThemeCol('textDim'), 10, 'center');
+    }
+  }
+
+  // Legend at bottom
+  for (var i = 0; i < 3; i++) {
+    ctx.fillStyle = bColors[i]; ctx.fillRect(12 + i * 135, H - 14, 10, 6);
+    drawText(ctx, BRANCH_SHORT[i] + ' ' + F(bRev[i]) + '฿', 26 + i * 135, H - 11, getThemeCol('textMuted'), 9, 'left');
+  }
+
+  buildTable('v6', ['สาขา', 'รายได้รวม', 'สัดส่วนรายได้', 'กำไรขั้นต้น', 'Gross Margin %', 'ปริมาณขาย'], [0, 1, 2].map(function(i){
+    var pct = totalRev > 0 ? (bRev[i] / totalRev * 100) : 0;
+    var mg = bRev[i] > 0 ? (bProf[i] / bRev[i] * 100) : 0;
+    return [BRANCHES[i], F(bRev[i]) + '฿', P(pct) + '%', F(bProf[i]) + '฿', P(mg) + '%', F(bQty[i]) + ' หน่วย'];
+  }));
+}
+
+/* ===== MODULE 7: PARETO 80/20 ANALYSIS ===== */
+function renderC7() {
+  if (!visibleCharts[7]) return;
+  var o = getCanvasContext('c7');
+  if (!o) return;
+  var ctx = o.ctx, W = o.W, H = o.H;
+  var mode = $('t7').value;
+
+  var pMap = {};
+  for (var i = 0; i < FD.length; i++) {
+    var f = FD[i], pn = PRODUCTS[f.pi];
+    if (!pMap[pn]) pMap[pn] = { r: 0, p: 0, q: 0 };
+    pMap[pn].r += f.rev; pMap[pn].p += f.prof; pMap[pn].q += f.q;
+  }
+
+  var sorted = Object.entries(pMap).sort(function(a,b){ return b[1].r - a[1].r; });
+  var totalRev = sorted.reduce(function(s, e){ return s + e[1].r; }, 0);
+  var cumRev = 0;
+  var cumPcts = sorted.map(function(e){ cumRev += e[1].r; return totalRev > 0 ? (cumRev / totalRev * 100) : 0; });
+  var n = sorted.length;
+
+  if (mode === 'hbar') {
+    var L = 75, R = 20, T = 15, B = 20, cW = W - L - R, cH = H - T - B;
+    var maxVal = n > 0 ? sorted[0][1].r * 1.15 : 1;
+    var bh = cH / Math.max(1, n) * 0.7;
+    for (var i = 0; i < n; i++) {
+      var y = T + cH * (i + 0.5) / n;
+      var barW = cW * sorted[i][1].r / maxVal;
+      ctx.fillStyle = PALETTE[i % PALETTE.length];
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(L, y - bh / 2, barW, bh, [0, 5, 5, 0]);
+      else ctx.rect(L, y - bh / 2, barW, bh);
+      ctx.fill();
+
+      drawText(ctx, sorted[i][0], L - 6, y, getThemeCol('textMuted'), 9.5, 'right', true);
+      drawText(ctx, F(sorted[i][1].r) + '฿', L + barW + 6, y, getThemeCol('textMain'), 9.5, 'left');
+    }
+  } else {
+    // Pareto (Bar + Cumulative % Line)
+    var L = 50, R = 40, T = 20, B = 35, cW = W - L - R, cH = H - T - B;
+    var maxVal = n > 0 ? Math.ceil(sorted[0][1].r / 2000) * 2000 + 2000 : 1;
+
+    // Grid & dual-axis
+    ctx.strokeStyle = getThemeCol('grid'); ctx.lineWidth = 1;
+    for (var i = 0; i <= 5; i++) {
+      var y = T + cH - (cH * i / 5);
+      ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(W - R, y); ctx.stroke();
+      drawText(ctx, F(Math.round(maxVal * i / 5)), L - 6, y, getThemeCol('textDim'), 8.5, 'right');
+      drawText(ctx, (i * 20) + '%', W - R + 6, y, '#ef4444', 8.5, 'left');
+    }
+
+    // 80% reference line
+    var y80 = T + cH - (cH * 0.8);
+    ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(L, y80); ctx.lineTo(W - R, y80); ctx.stroke();
+    ctx.setLineDash([]);
+    drawText(ctx, '80% Pareto Line', W - R - 6, y80 - 6, '#ef4444', 8, 'right');
+
+    var bw = n > 0 ? cW / n * 0.65 : 0;
+    for (var i = 0; i < n; i++) {
+      var x = L + cW * (i + 0.5) / n;
+      var barH = cH * sorted[i][1].r / maxVal;
+      ctx.fillStyle = PALETTE[i % PALETTE.length];
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(x - bw / 2, T + cH - barH, bw, barH, [4, 4, 0, 0]);
+      else ctx.fillRect(x - bw / 2, T + cH - barH, bw, barH);
+      ctx.fill();
+
+      drawText(ctx, sorted[i][0], x, H - 10, getThemeCol('textMuted'), 8.5, 'center');
+    }
+
+    // Cumulative line
+    ctx.beginPath(); ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round';
+    for (var i = 0; i < n; i++) {
+      var x = L + cW * (i + 0.5) / n, y = T + cH - (cH * cumPcts[i] / 100);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    for (var i = 0; i < n; i++) {
+      var x = L + cW * (i + 0.5) / n, y = T + cH - (cH * cumPcts[i] / 100);
+      ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#ef4444'; ctx.fill();
+      ctx.strokeStyle = getThemeCol('bg'); ctx.lineWidth = 2; ctx.stroke();
+      drawText(ctx, Math.round(cumPcts[i]) + '%', x, y - 10, '#ef4444', 8.5, 'center', true);
+    }
+  }
+
+  buildTable('v7', ['อันดับ', 'สินค้า', 'รายได้รวม', 'กำไรขั้นต้น', 'Gross Margin %', 'สะสม % (Cumulative)'], sorted.map(function(e, idx){
+    var mg = e[1].r > 0 ? (e[1].p / e[1].r * 100) : 0;
+    return ['#' + (idx + 1), e[0], F(e[1].r) + '฿', F(e[1].p) + '฿', P(mg) + '%', P(cumPcts[idx]) + '%'];
+  }));
+}
+
+/* ===== MODULE 8: SKU UNIT ECONOMICS ===== */
+function renderC8() {
+  if (!visibleCharts[8]) return;
+  var o = getCanvasContext('c8');
+  if (!o) return;
+  var ctx = o.ctx, W = o.W, H = o.H;
+  
+  var skuSpecs = [
+    { name: 'ครัวซองต์', pr: 85, co: 60 },
+    { name: 'คาปูชิโน', pr: 75, co: 27 },
+    { name: 'ชาไทย', pr: 55, co: 18 },
+    { name: 'ชีสเค้ก', pr: 110, co: 72 },
+    { name: 'บราวนี', pr: 55, co: 22 },
+    { name: 'ลาเต้', pr: 75, co: 28 },
+    { name: 'อเมริกาโน', pr: 60, co: 20 },
+    { name: 'โกโก้', pr: 65, co: 25 }
+  ];
+
+  var L = 75, R = 20, T = 25, B = 25, cW = W - L - R, cH = H - T - B;
+  var maxPrice = 120;
+  var bh = cH / skuSpecs.length * 0.65;
+
+  // Grid
+  ctx.strokeStyle = getThemeCol('grid'); ctx.lineWidth = 1;
+  for (var i = 0; i <= 6; i++) {
+    var x = L + cW * i / 6;
+    ctx.beginPath(); ctx.moveTo(x, T); ctx.lineTo(x, T + cH); ctx.stroke();
+    drawText(ctx, (i * 20) + '฿', x, H - 10, getThemeCol('textDim'), 8.5, 'center');
+  }
+
+  for (var i = 0; i < skuSpecs.length; i++) {
+    var s = skuSpecs[i];
+    var unitProfit = s.pr - s.co;
+    var mg = (unitProfit / s.pr * 100);
+    var y = T + cH * (i + 0.5) / skuSpecs.length;
+
+    var wCost = cW * s.co / maxPrice;
+    var wProfit = cW * unitProfit / maxPrice;
+
+    // Cost bar (Red)
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.85)';
+    ctx.fillRect(L, y - bh / 2, wCost, bh);
+
+    // Profit bar (Green)
+    ctx.fillStyle = 'rgba(34, 197, 94, 0.85)';
+    ctx.fillRect(L + wCost, y - bh / 2, wProfit, bh);
+
+    drawText(ctx, s.name, L - 6, y, getThemeCol('textMuted'), 9, 'right', true);
+    drawText(ctx, s.pr + '฿ (' + P(mg) + '%)', L + wCost + wProfit + 6, y, getThemeCol('textMain'), 8.5, 'left');
+  }
+
+  // Legend
+  ctx.fillStyle = 'rgba(239, 68, 68, 0.85)'; ctx.fillRect(L + 8, T - 18, 10, 6);
+  drawText(ctx, 'ต้นทุน/ชิ้น (Cost)', L + 22, T - 15, getThemeCol('textMuted'), 8.5, 'left');
+  ctx.fillStyle = 'rgba(34, 197, 94, 0.85)'; ctx.fillRect(L + 120, T - 18, 10, 6);
+  drawText(ctx, 'กำไร/ชิ้น (Unit Margin)', L + 134, T - 15, getThemeCol('textMuted'), 8.5, 'left');
+
+  buildTable('v8', ['สินค้า', 'ราคาขาย (บาท)', 'ต้นทุน (บาท)', 'กำไร/ชิ้น (บาท)', 'Gross Margin %'], skuSpecs.map(function(s){
+    var uP = s.pr - s.co;
+    return [s.name, s.pr + ' ฿', s.co + ' ฿', uP + ' ฿', P(uP / s.pr * 100) + '%'];
+  }));
+}
+
+/* ===== MASTER TRANSACTION EXPLORER TABLE ===== */
+function renderMasterTable() {
+  var sEl = $('masterSearch');
+  var q = sEl ? sEl.value.toLowerCase().trim() : '';
+  var filtered = FD.filter(function(r){
+    if (!q) return true;
+    var searchStr = (r.id + ' ' + (r.d < 10 ? '0' : '') + r.d + ' ส.ค. ' + BRANCHES[r.bi] + ' ' + PRODUCTS[r.pi] + ' ' + CATEGORIES[r.ci]).toLowerCase();
+    return searchStr.indexOf(q) >= 0;
+  });
+
+  // Sort
+  filtered.sort(function(a, b){
+    var valA = a[sortCol], valB = b[sortCol];
+    if (typeof valA === 'string') return sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    return sortAsc ? valA - valB : valB - valA;
+  });
+
+  var headers = [
+    { key: 'id', lbl: 'รหัสรายการ' },
+    { key: 'd', lbl: 'วันที่' },
+    { key: 'bi', lbl: 'สาขา' },
+    { key: 'pi', lbl: 'สินค้า' },
+    { key: 'ci', lbl: 'หมวดหมู่' },
+    { key: 'q', lbl: 'จำนวนขาย' },
+    { key: 'pr', lbl: 'ราคา/หน่วย' },
+    { key: 'co', lbl: 'ต้นทุน/หน่วย' },
+    { key: 'rev', lbl: 'รายได้รวม' },
+    { key: 'cost', lbl: 'ต้นทุนรวม' },
+    { key: 'prof', lbl: 'กำไรขั้นต้น' },
+    { key: 'mg', lbl: 'Margin%' }
+  ];
+
+  var hHtml = '<thead><tr>' + headers.map(function(h){
+    var icon = (sortCol === h.key ? (sortAsc ? ' ↑' : ' ↓') : '');
+    return '<th onclick="changeSort(' + "'" + h.key + "'" + ')">' + h.lbl + icon + '</th>';
+  }).join('') + '</tr></thead><tbody>';
+
+  var bHtml = filtered.map(function(r){
+    return '<tr>' +
+      '<td><b>' + r.id + '</b></td>' +
+      '<td>' + (r.d < 10 ? '0' : '') + r.d + ' ส.ค. 2569</td>' +
+      '<td>' + BRANCHES[r.bi] + '</td>' +
+      '<td>' + PRODUCTS[r.pi] + '</td>' +
+      '<td>' + CATEGORIES[r.ci] + '</td>' +
+      '<td>' + r.q + '</td>' +
+      '<td>' + r.pr + ' ฿</td>' +
+      '<td>' + r.co + ' ฿</td>' +
+      '<td style="color:#ff9838;font-weight:700;">' + F(r.rev) + ' ฿</td>' +
+      '<td style="color:#ef4444;">' + F(r.cost) + ' ฿</td>' +
+      '<td style="color:#22c55e;font-weight:700;">' + F(r.prof) + ' ฿</td>' +
+      '<td><b>' + P(r.mg) + '%</b></td>' +
+      '</tr>';
+  }).join('');
+
+  var mt = $('masterTable');
+  if (mt) mt.innerHTML = hHtml + bHtml + '</tbody>';
+}
+
+function changeSort(col) {
+  if (sortCol === col) sortAsc = !sortAsc;
+  else { sortCol = col; sortAsc = true; }
+  renderMasterTable();
+}
+
+/* CSV Exporter */
+function exportMasterCSV() {
+  var csv = ['\uFEFFรหัสรายการ,วันที่,สาขา,สินค้า,หมวดหมู่,จำนวนขาย (หน่วย),ราคาขายต่อหน่วย (บาท),ต้นทุนต่อหน่วย (บาท),รายได้รวม (บาท),ต้นทุนรวม (บาท),กำไรขั้นต้น (บาท),Margin%'];
+  for (var i = 0; i < FD.length; i++) {
+    var r = FD[i];
+    csv.push([
+      r.id,
+      (r.d < 10 ? '0' : '') + r.d + '/08/2026',
+      BRANCHES[r.bi],
+      PRODUCTS[r.pi],
+      CATEGORIES[r.ci],
+      r.q,
+      r.pr,
+      r.co,
+      r.rev,
+      r.cost,
+      r.prof,
+      P(r.mg) + '%'
+    ].join(','));
+  }
+  var blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  var link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'Coffee_Sales_Executive_Report_Aug2026.csv';
+  link.click();
+}
+
+/* Master Re-draw */
+function renderAllCharts() {
+  renderC1();
+  renderH2();
+  renderH3();
+  renderC4();
+  renderC5();
+  renderC6();
+  renderC7();
+  renderC8();
+}
+
+// Initialize
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', applyFilters);
+} else {
+  applyFilters();
+}
+window.addEventListener('resize', renderAllCharts);
+</script>
+</body>
+</html>
